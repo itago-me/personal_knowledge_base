@@ -7,6 +7,8 @@ import shutil   #
 from pathlib import Path
 from typing import List, Optional
 
+import fastapi_cdn_host
+
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -33,6 +35,7 @@ CHROMA_DIR.mkdir(parents=True, exist_ok=True)
 
 # 初始化 FastAPI 应用
 app = FastAPI(title="个人知识库问答系统", version="1.0")
+fastapi_cdn_host.patch_docs(app)  #-->应用补丁
 
 # 可选：提供静态文件和模板（如果想用简单的HTML页面）
 # 注意：如果你不打算使用 HTML 页面，可以不用这部分
@@ -87,7 +90,7 @@ async def root():
         <style>
             body { font-family: sans-serif; margin: 20px; }
             .container { max-width: 800px; margin: auto; }
-            textarea { width: 100%; height: 100px; }
+            textarea { width: 100%; height: 100px;
             input, button { margin: 5px; }
             .result { margin-top: 20px; border: 1px solid #ccc; padding: 10px; background: #f9f9f9; }
         </style>

@@ -2,10 +2,12 @@
 RAG 问答管道:检索 + 生成2
 """
 import torch
+
 from transformers import AutoTokenizer, AutoModelForCausalLM
+
 from typing import List, Dict, Any
-from .embedding import EmbeddingModel
-from .vector_store import VectorStore
+from embedding import EmbeddingModel
+from vector_store import VectorStore
 
 class RAGPipeline:
     def __init__(self, 
@@ -20,7 +22,7 @@ class RAGPipeline:
         self.embedder = EmbeddingModel(embedding_model_name)
         # 初始化向量数据库
         self.vector_store = VectorStore(persist_directory=persist_dir)
-        # 增加基础存储会话记忆功能(保存ansewer,prompt)
+            # 增加基础存储会话记忆功能(保存ansewer,prompt)
         self.history = []
         self.max_history = max_history
         
@@ -42,7 +44,7 @@ class RAGPipeline:
         """基于检索结果生成答案"""
         # 构建上下文
         context = "\n\n".join([chunk["text"] for chunk in retrieved_chunks])
-        # 构建提示词（Qwen2 的 chat 格式）      
+        # 构建提示词（Qwen2 的 chat 格式)
         messages = [
             {"role": "system", "content": "你是一个温柔、可爱、有耐心的AI助手。说话轻声细语,回答简洁友好"}]
         
@@ -50,6 +52,7 @@ class RAGPipeline:
         for user_msg, assistant_msg in self.history[-self.max_history:]:
             messages.append({"role":"user","content":user_msg})
             messages.append({"role":"assistant","content":assistant_msg}) 
+
         # 添加上写文问题和上下文
         messages.append({"role": "user", "content": f"上下文:\n{context}\n\n问题:{query}\n\n请回答:"})
 
@@ -68,6 +71,7 @@ class RAGPipeline:
             )
         # 解码
         generated_text = self.tokenizer.decode(outputs[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
+        answer = generated_text
 
         # 更新历史
         self.history.append((query, answer))

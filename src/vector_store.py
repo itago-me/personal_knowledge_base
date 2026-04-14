@@ -1,6 +1,7 @@
 # src/vector_store.py
 import chromadb
 from chromadb.config import Settings
+
 from typing import List, Dict, Any
 
 class VectorStore:
@@ -19,7 +20,7 @@ class VectorStore:
                              metadatas=metadatas)
         print(f"成功添加 {len(ids)} 个向量")
 
-    def search(self, query: str, embedding_model, top_k: int = 5):
+    def search(self, query: str, embedding_model, top_k: int = 5):  
         query_embedding = embedding_model.embed(query).tolist()[0]
         results = self.collection.query(query_embeddings=[query_embedding], 
                                        n_results=top_k, include=["documents", "metadatas", "distances"])

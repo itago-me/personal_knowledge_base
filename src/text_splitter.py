@@ -29,10 +29,8 @@ class TextSplitter:
         for doc in document:
             # 获取原始内容
             text = doc["content"]
-            # print("获取的文本内容:", text)
             # 切分
             chunk_texts = self.splitter.split_text(text)
-            # print("切分后的文本:", chunk_texts)
             # 构建分块结果
             for idx, chunk_text in enumerate(chunk_texts):
                 chunks.append({
@@ -40,7 +38,6 @@ class TextSplitter:
                     "chunk_id": idx,
                     "chunk_text": chunk_text,
                 })
-            # print("我来看看chunks里面装了什么",chunks)
         return chunks
             
 # 简单的测试(当直接运行此文件时)

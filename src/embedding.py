@@ -4,6 +4,7 @@
 
 from sentence_transformers import SentenceTransformer
 import numpy as np
+
 from typing import List, Union
 
 
@@ -26,9 +27,7 @@ class EmbeddingModel:
 
         if isinstance(texts, str):
             texts = [texts]
-            # print("我来看看texts里面是什么:",texts)
         embeddings = self.model.encode(texts, convert_to_numpy = True)
-        # print("这个embedding怪神秘的勒:",embeddings)
         return embeddings
     
 if __name__ == "__main__":

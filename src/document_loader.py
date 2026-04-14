@@ -4,7 +4,6 @@
 from pathlib import Path
 from typing import List, Dict, Any
 import pypdf
-import markdown
 from docx import Document as DocxDocument
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -38,7 +37,7 @@ class DocumentLoader:
     
     def _load_file(self, file_path: Path) -> str:
         """根据文件扩展名调用对应解析器"""
-        suffix = file_path.suffix.lower()
+        suffix = file_path.suffix.lower()   #fuffix(后缀)---此行为获取文件后缀名 --- .txt, .pdf, .docx, .md等
         try:
             if suffix == ".txt":
                 return file_path.read_text(encoding='utf-8')
@@ -46,7 +45,7 @@ class DocumentLoader:
                 return self._load_pdf(file_path)
             elif suffix in [".md", ".markdown"]:
                 return self._load_markdown(file_path)
-            elif suffix == ".docx":
+            elif suffix == ".docx": 
                 return self._load_docx(file_path)
             else:
                 print(f"暂不支持的文件格式: {suffix}")
